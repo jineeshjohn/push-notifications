@@ -50,6 +50,7 @@ function subscribe() {
   then(function(pushSubscription) {
     sub = pushSubscription;
     console.log('Subscribed! Endpoint:', sub.endpoint);
+    document.getElementById('clientId').value = sub.endpoint;
     subscribeButton.textContent = 'Unsubscribe';
     isSubscribed = true;
   });
