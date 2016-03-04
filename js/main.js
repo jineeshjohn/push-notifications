@@ -32,9 +32,22 @@ function subscribe() {
         sub = pushSubscription;
         console.log('Subscribed! Endpoint:', sub.endpoint);
         document.getElementById('clientId').value = sub.endpoint;
+        sendSubscriptionToServer
+(sub);
         subscribeButton.textContent = 'Unsubscribe';
         isSubscribed = true;
     });
+}
+
+function sendSubscriptionToServer(subscription){
+  var clientId = subscription.endpoint.split('https://android.googleapis.com/gcm/send/')[1];
+  var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
+  ref.authAnonymously();
+
+  var postsRef = ref.child("subscriptions");
+  postsRef.push().set({
+      clientId: clientId
+  });
 }
 
 function unsubscribe() {
