@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Push-notifications by jineeshjohn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script>
+    // Register the callback to be fired every time auth state changes
+    var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
+
+
+    ref.authAnonymously();
+
+    var postsRef = ref.child("subscriptions");
+    var newPostRef = postsRef.push();
+    newPostRef.set({
+        clientId: "sampleId"
+    });
+    // we can also chain the two calls together
+    postsRef.push().set({
+        clientId: "anotherClientId"
+    });
+
+    // ref.orderByChild("full_name").on("child_added", function(snapshot) {
+    //     console.log(snapshot.key() + " was " + snapshot.val() );
+    // });
+
+    //setting the data
+    // var usersRef = ref.child("subscripti");
+    // usersRef.set({
+    //     Alan: {
+    //         date_of_birth: "June 23, 1912",
+    //         full_name: "Alan Turing"
+    //     },
+    //     Grace: {
+    //         date_of_birth: "December 9, 1906",
+    //         full_name: "Grace Hopper"
+    //     }
+    // });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

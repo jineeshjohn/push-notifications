@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Push-notifications by jineeshjohn</title>
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+    var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
+    ref.authAnonymously();
+    var clients =  {
+        "registration_ids":[]
+    }
+
+    var postsRef = ref.child("subscriptions");
+    var clientIdsList = clients.registration_ids;
+
+    postsRef.orderByChild("clientId").on("child_added", function(snapshot) {
+        clientIdsList.push(snapshot.val().clientId);
+    });
+
+    function getClientIds() {
+        document.getElementById('clientIdLists').value = JSON.stringify(clients);
+        console.log(JSON.stringify(clients));
+    }
+    </script>
+</head>
+
+<body>
+    <button onclick="getClientIds()">Get all ids </button>
+    <textarea id='clientIdLists'></textarea>
+</body>
+
+</html>

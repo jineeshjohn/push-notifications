@@ -21,6 +21,7 @@ if ('serviceWorker' in navigator) {
 subscribeButton.addEventListener('click', function() {
     if (isSubscribed) {
         unsubscribe();
+
     } else {
         subscribe();
     }
@@ -32,25 +33,38 @@ function subscribe() {
         sub = pushSubscription;
         console.log('Subscribed! Endpoint:', sub.endpoint);
         document.getElementById('clientId').value = sub.endpoint;
-        sendSubscriptionToServer
-(sub);
+        sendSubscriptionToServer(sub);
         subscribeButton.textContent = 'Unsubscribe';
         isSubscribed = true;
     });
 }
 
-function sendSubscriptionToServer(subscription){
-  var clientId = subscription.endpoint.split('https://android.googleapis.com/gcm/send/')[1];
-  var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
-  ref.authAnonymously();
+function sendSubscriptionToServer(subscription) {
+    var clientId = subscription.endpoint.split('https://android.googleapis.com/gcm/send/')[1];
+    var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
+    ref.authAnonymously();
 
-  var postsRef = ref.child("subscriptions");
-  postsRef.push().set({
-      clientId: clientId
-  });
+    var postsRef = ref.child("subscriptions");
+    postsRef.push().set({
+        clientId: clientId
+    });
+}
+
+function removeSubscriptionFromServer(subscription) {
+    var subscriptionId = subscription.endpoint.split('https://android.googleapis.com/gcm/send/')[1];
+    var ref = new Firebase("https://pushnotifcation.firebaseio.com/subscriptions")
+        .startAt(subscriptionId)
+        .endAt(subscriptionId)
+        .once('value', function(snap) {
+            console.log('accounts matching email address', snap.val());
+        });
+    // ref.authAnonymously();
+    // var item = ref.child("/clientId/" + clientId);
+    // item.remove();
 }
 
 function unsubscribe() {
+    removeSubscriptionFromServer(sub);
     sub.unsubscribe().then(function(event) {
         subscribeButton.textContent = 'Subscribe';
         console.log('Unsubscribed!', event);

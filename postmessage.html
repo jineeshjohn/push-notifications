@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Push-notifications by jineeshjohn</title>
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+    var ref = new Firebase("https://pushnotifcation.firebaseio.com/");
+    ref.authAnonymously();
+
+    var postsRef = ref.child("subscriptions");
+    var clientIdsList = [];
+
+    postsRef.orderByChild("clientId").on("child_added", function(snapshot) {
+        clientIdsList.push(snapshot.val().clientId);
+    });
+
+    function postMessage() {
+        var headers = [{
+            "key": "Authorization",
+            "value": "key=AIzaSyCLND2O5JLLC8L0sLzOu4wFpBwCPv0rGvU",
+            "name": "Authorization",
+            "enabled": true
+        }, {
+            "key": "Content-Type",
+            "value": "application/json",
+            "name": "Content-Type",
+            "enabled": true
+        }, {
+            "key": "Cache-Control",
+            "name": "Cache-Control",
+            "value": "no-cache"
+        }, {
+            "key": "Postman-Token",
+            "name": "Postman-Token",
+            "value": "f915b4a9-60bb-9b40-674f-c571502c2e02"
+        }];
+
+        var url = "https://android.googleapis.com/gcm/send";
+        var clientIds = '{registration_ids:["cAkxBBlwaII:APA91bEOPaYXqV_5Vj7GlUpOob98bE47cUQezPRbbPKQGefz--SAIh_Jhjn4YpQxouCoRV1ESgQ2HxEShuhGAjkxtWbkVTCy15nhLkSRulyd1KJuir5Od6NJeY-Q68nm33oYHTc9EQuV"]}';
+
+
+
+
+
+        // var xhr = createCORSRequest('GET', url);
+        // xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        // if (!xhr) {
+        //     alert('CORS not supported');
+        //     return;
+        // }
+
+        // // Response handlers.
+        // xhr.onload = function() {
+        //     var responseText = xhr.responseText;
+        //     console.log(responseText);
+        // };
+
+        // xhr.onerror = function() {
+        //     alert('Woops, there was an error making the request.');
+        // };
+
+        // xhr.send();
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            contentType: "application/json",
+            data: '{registration_ids:["cAkxBBlwaII:APA91bEOPaYXqV_5Vj7GlUpOob98bE47cUQezPRbbPKQGefz--SAIh_Jhjn4YpQxouCoRV1ESgQ2HxEShuhGAjkxtWbkVTCy15nhLkSRulyd1KJuir5Od6NJeY-Q68nm33oYHTc9EQuV"]}',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", "key=AIzaSyCLND2O5JLLC8L0sLzOu4wFpBwCPv0rGvU");
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.log(888, arguments);
+            }
+        });
+
+
+
+
+    }
+
+
+
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+
+    </script>
+</head>
+
+<body>
+    <button onclick="postMessage()">Post a message </button>
+</body>
+
+</html>
