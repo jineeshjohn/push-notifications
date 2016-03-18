@@ -1,6 +1,10 @@
 
+<<<<<<< HEAD
 This is file 1 changes first
 
 This is file 1 changes second
 
 This is file 1 changes third
+=======
+This is file 1 changes first
+>>>>>>> parent of fec2815... File 1 second change
